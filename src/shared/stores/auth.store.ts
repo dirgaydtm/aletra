@@ -1,6 +1,7 @@
+import type { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { supabase } from "#/shared/lib/supabase";
-import type { AuthUser } from "#/shared/schemas/auth.schema";
+import { type AuthUser, authUserSchema } from "#/shared/schemas/auth.schema";
 
 interface AuthState {
 	user: AuthUser | null;
@@ -10,6 +11,19 @@ interface AuthState {
 	logout: () => Promise<void>;
 	initialize: () => Promise<void>;
 }
+
+const mapUser = (u: User): AuthUser =>
+	authUserSchema.parse({
+		id: u.id,
+		email: u.email ?? "",
+		username:
+			u.user_metadata?.full_name ||
+			u.user_metadata?.user_name ||
+			u.user_metadata?.name ||
+			u.email?.split("@")[0] ||
+			"User",
+		loggedInAt: Date.now(),
+	});
 
 export const useAuthStore = create<AuthState>()((set) => ({
 	user: null,
@@ -33,26 +47,10 @@ export const useAuthStore = create<AuthState>()((set) => ({
 		const {
 			data: { session },
 		} = await supabase.auth.getSession();
-
-		if (session?.user) {
-			const u = session.user;
-			const username =
-				u.user_metadata?.full_name ||
-				u.user_metadata?.user_name ||
-				u.user_metadata?.name ||
-				u.email?.split("@")[0] ||
-				"User";
-
-			set({
-				user: {
-					id: u.id,
-					email: u.email || "",
-					username,
-					loggedInAt: Date.now(),
-				},
-			});
-		} else {
-			set({ user: null });
-		}
+		set({ user: session?.user ? mapUser(session.user) : null });
 	},
 }));
+
+supabase.auth.onAuthStateChange((_event, session) => {
+	useAuthStore.setState({ user: session?.user ? mapUser(session.user) : null });
+});

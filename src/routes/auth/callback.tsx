@@ -7,20 +7,26 @@ export const Route = createFileRoute("/auth/callback")({
 	component: AuthCallbackPage,
 });
 
+const TIMEOUT_MS = 5000;
+
 function AuthCallbackPage() {
 	const navigate = useNavigate();
+	const user = useAuthStore((s) => s.user);
 
 	useEffect(() => {
-		useAuthStore
-			.getState()
-			.initialize()
-			.then(() => {
-				const user = useAuthStore.getState().user;
-				navigate({ to: user ? "/" : "/auth" });
-			})
-			.catch(() => {
+		if (user) {
+			navigate({ to: "/quiz" });
+		}
+	}, [user, navigate]);
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			if (!useAuthStore.getState().user) {
 				navigate({ to: "/auth" });
-			});
+			}
+		}, TIMEOUT_MS);
+
+		return () => clearTimeout(timer);
 	}, [navigate]);
 
 	return (
