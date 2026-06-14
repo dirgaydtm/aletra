@@ -18,7 +18,12 @@ export const Route = createRootRoute({
 		],
 		links: [{ rel: "stylesheet", href: appCss }],
 	}),
-	beforeLoad: () => useAuthStore.getState().initialize(),
+	beforeLoad: async () => {
+		const store = useAuthStore.getState();
+		if (store.isLoading) {
+			await store.initialize();
+		}
+	},
 	shellComponent: RootDocument,
 });
 

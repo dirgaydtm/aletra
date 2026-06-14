@@ -5,6 +5,7 @@ import { type AuthUser, authUserSchema } from "#/shared/schemas/auth.schema";
 
 interface AuthState {
 	user: AuthUser | null;
+	isLoading: boolean;
 	loginWithProvider: (
 		provider: "google" | "github",
 	) => Promise<{ error: string | null }>;
@@ -27,6 +28,7 @@ const mapUser = (u: User): AuthUser =>
 
 export const useAuthStore = create<AuthState>()((set) => ({
 	user: null,
+	isLoading: true,
 
 	loginWithProvider: async (provider) => {
 		const { error } = await supabase.auth.signInWithOAuth({
@@ -40,17 +42,18 @@ export const useAuthStore = create<AuthState>()((set) => ({
 
 	logout: async () => {
 		await supabase.auth.signOut();
-		set({ user: null });
 	},
 
 	initialize: async () => {
 		const {
 			data: { session },
 		} = await supabase.auth.getSession();
-		set({ user: session?.user ? mapUser(session.user) : null });
+		const newUser = session?.user ? mapUser(session.user) : null;
+		set({ user: newUser, isLoading: false });
 	},
 }));
 
 supabase.auth.onAuthStateChange((_event, session) => {
-	useAuthStore.setState({ user: session?.user ? mapUser(session.user) : null });
+	const newUser = session?.user ? mapUser(session.user) : null;
+	useAuthStore.setState({ user: newUser, isLoading: false });
 });
