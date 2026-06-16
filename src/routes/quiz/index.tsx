@@ -5,7 +5,7 @@ import { QuestionCard } from "#/features/quiz/components/QuestionCard";
 import { useAuthStore } from "#/shared/stores/auth.store";
 import { useQuizStore } from "#/shared/stores/quiz.store";
 
-export const Route = createFileRoute("/quiz/play")({
+export const Route = createFileRoute("/quiz/")({
 	ssr: false,
 	beforeLoad: () => {
 		const user = useAuthStore.getState().user;
@@ -15,10 +15,10 @@ export const Route = createFileRoute("/quiz/play")({
 		if (status === "idle") throw redirect({ to: "/" });
 		if (status === "finished") throw redirect({ to: "/quiz/result" });
 	},
-	component: QuizPlayPage,
+	component: QuizPage,
 });
 
-function QuizPlayPage() {
+function QuizPage() {
 	const questions = useQuizStore((s) => s.questions);
 	const currentIndex = useQuizStore((s) => s.currentIndex);
 	const navigate = useNavigate();

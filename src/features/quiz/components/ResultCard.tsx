@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { decode } from "he";
-import Dino from "#/shared/components/Dino";
 import slideInLeft from "#/shared/animations/slide-in-left";
+import Dino from "#/shared/components/Dino";
 import {
 	Terminal,
 	TerminalBody,

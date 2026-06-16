@@ -10,6 +10,8 @@ interface AuthState {
 	loginWithProvider: (
 		provider: "google" | "github",
 	) => Promise<{ error: string | null }>;
+	loginWithEmail: (email: string, password: string) => Promise<{ error: string | null }>;
+	registerWithEmail: (email: string, password: string, username: string) => Promise<{ error: string | null }>;
 	logout: () => Promise<void>;
 	initialize: () => Promise<void>;
 }
@@ -38,6 +40,28 @@ export const useAuthStore = create<AuthState>()((set) => ({
 				redirectTo: `${window.location.origin}/auth/callback`,
 			},
 		});
+		return { error: error?.message ?? null };
+	},
+
+	loginWithEmail: async (email, password) => {
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password,
+		});
+		return { error: error?.message ?? null };
+	},
+
+	registerWithEmail: async (email, password, username) => {
+		const { data, error } = await supabase.auth.signUp({
+			email,
+			password,
+			options: {
+				data: { user_name: username },
+			},
+		});
+		if (data.user?.identities?.length === 0) {
+			return { error: "Email already registered." };
+		}
 		return { error: error?.message ?? null };
 	},
 

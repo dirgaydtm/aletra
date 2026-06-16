@@ -34,7 +34,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<head>
 				<HeadContent />
 			</head>
-			<body className="min-h-screen bg-background text-foreground antialiased font-mono">
+			<body className="min-h-screen bg-background text-foreground antialiased">
 				<ThemeProvider attribute="class" defaultTheme="dark">
 					{children}
 					<Toaster />

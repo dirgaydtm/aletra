@@ -19,13 +19,14 @@ import { Label } from "#/shared/components/ui/label";
 import { Separator } from "#/shared/components/ui/separator";
 import { useAuthStore } from "#/shared/stores/auth.store";
 
-export function LoginForm() {
-	const { loginWithProvider, loginWithEmail } = useAuthStore();
+export function RegisterForm() {
+	const { loginWithProvider, registerWithEmail } = useAuthStore();
 	const [activeProvider, setActiveProvider] = useState<
 		"google" | "github" | "email" | null
 	>(null);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [username, setUsername] = useState("");
 	const navigate = useNavigate();
 
 	const handleOAuthLogin = async (provider: "google" | "github") => {
@@ -39,15 +40,15 @@ export function LoginForm() {
 		}
 	};
 
-	const handleEmailLogin = async (e: React.FormEvent) => {
+	const handleEmailRegister = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setActiveProvider("email");
-		const result = await loginWithEmail(email, password);
+		const result = await registerWithEmail(email, password, username);
 		if (result.error) {
 			toast.error(result.error);
 			setActiveProvider(null);
 		} else {
-			toast.success("Login successful!");
+			toast.success("Registration successful!");
 			navigate({ to: "/" });
 		}
 	};
@@ -56,11 +57,11 @@ export function LoginForm() {
 
 	return (
 		<Terminal className="relative z-10 w-full max-w-sm overflow-visible">
-			<Dino className="absolute -top-14 left-6 size-16 rotate-6 drop-shadow-md z-[-1]" />
+			<Dino className="absolute -top-14 right-6 size-16 -rotate-6 rotate-y-180 drop-shadow-md z-[-1]" />
 			<TerminalHeader>
 				<div className="flex items-center gap-3">
 					<TerminalWindowControls />
-					<TerminalTitle>auth.sh — login</TerminalTitle>
+					<TerminalTitle>auth.sh — register</TerminalTitle>
 				</div>
 				<span>
 					<span className="text-xs text-muted-foreground">ready</span>
@@ -69,14 +70,26 @@ export function LoginForm() {
 
 			<TerminalBody>
 				<div className="space-y-1 pb-4">
-					<p className="select-none text-xs text-muted-foreground">$ authenticate</p>
+					<p className="select-none text-xs text-muted-foreground">$ create_user</p>
 					<TypewriterText
-						text="Welcome back."
+						text="Join the terminal."
 						className="text-2xl font-bold tracking-tight"
 					/>
 				</div>
 
-				<form onSubmit={handleEmailLogin} className="space-y-4">
+				<form onSubmit={handleEmailRegister} className="space-y-4">
+					<div className="space-y-1.5">
+						<Label htmlFor="username">Username</Label>
+						<Input
+							id="username"
+							type="text"
+							placeholder="hacker99"
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							required
+							className="rounded-none font-mono"
+						/>
+					</div>
 					<div className="space-y-1.5">
 						<Label htmlFor="email">Email</Label>
 						<Input
@@ -110,7 +123,7 @@ export function LoginForm() {
 						{activeProvider === "email" ? (
 							<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent group-hover:border-foreground group-hover:border-t-transparent" />
 						) : null}
-						Login
+						Register
 					</Button>
 				</form>
 
@@ -154,9 +167,9 @@ export function LoginForm() {
 			</TerminalBody>
 			<TerminalFooter className="flex items-center justify-center">
 				<span className="text-xs text-muted-foreground">
-					Don't have an account?{" "}
-					<Link to="/auth/register" className="text-foreground hover:underline">
-						Register
+					Already have an account?{" "}
+					<Link to="/auth/login" className="text-foreground hover:underline">
+						Login
 					</Link>
 				</span>
 			</TerminalFooter>

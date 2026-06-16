@@ -15,6 +15,7 @@ function shuffleArray<T>(array: T[]): T[] {
 
 export async function fetchQuestions(amount: number): Promise<QuizQuestion[]> {
 	const { data } = await axios.get(BASE_URL, {
+		// kategori 18 adalah kategori tema soal computer sciende
 		params: { amount, category: 18 },
 	});
 

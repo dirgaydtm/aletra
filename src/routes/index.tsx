@@ -8,7 +8,7 @@ export const Route = createFileRoute("/")({
 	ssr: false,
 	beforeLoad: () => {
 		const status = useQuizStore.getState().status;
-		if (status === "active") throw redirect({ to: "/quiz/play" });
+		if (status === "active") throw redirect({ to: "/quiz" });
 		if (status === "finished") throw redirect({ to: "/quiz/result" });
 	},
 	component: RootIndexPage,
@@ -21,7 +21,7 @@ function RootIndexPage() {
 		<main className="relative min-h-screen flex flex-col items-center justify-center p-4">
 			<div className="w-full max-w-4xl flex flex-col items-center z-10 relative pb-8">
 				<AletraLogo />
-				<QuizSetup username={user?.username} />
+				<QuizSetup username={user?.username ?? ""} />
 			</div>
 		</main>
 	);

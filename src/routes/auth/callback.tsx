@@ -17,10 +17,10 @@ function AuthCallbackPage() {
 			.initialize()
 			.then(() => {
 				const user = useAuthStore.getState().user;
-				navigate({ to: user ? "/" : "/auth" });
+				navigate({ to: user ? "/" : "/auth/login" });
 			})
 			.catch(() => {
-				navigate({ to: "/auth" });
+				navigate({ to: "/auth/login" });
 			});
 	}, [navigate]);
 
@@ -29,7 +29,7 @@ function AuthCallbackPage() {
 			<div className="flex flex-col items-center gap-3">
 				<span className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
 				<p className="text-sm text-muted-foreground animate-pulse">
-					Menghubungkan akun...
+					Connecting...
 				</p>
 			</div>
 		</div>

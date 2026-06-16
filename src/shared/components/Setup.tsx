@@ -59,7 +59,7 @@ export function QuizSetup({ username }: { username: string }) {
 		try {
 			const questions = await fetchQuestions(amount);
 			startQuiz(questions, { amount, duration: duration * 60 });
-			navigate({ to: "/quiz/play" });
+			navigate({ to: "/quiz" });
 		} catch {
 			setApiError(
 				"Failed to fetch questions from the server. Please try again.",
@@ -165,7 +165,7 @@ export function QuizSetup({ username }: { username: string }) {
 								<motion.button
 									type="button"
 									{...slideInLeft(1)}
-									onClick={() => navigate({ to: "/auth" })}
+									onClick={() => navigate({ to: "/auth/login" })}
 									className="flex-1 group cursor-pointer items-center justify-center border border-border bg-transparent px-3 py-2.5 text-sm transition-all duration-150 hover:border-foreground hover:bg-foreground hover:text-background"
 								>
 									Login to Play
