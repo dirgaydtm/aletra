@@ -52,7 +52,7 @@ export function PeekingCharacter({ classname }: { classname?: string }) {
 	}, []);
 
 	return (
-		<div className={cn("absolute bottom-[-70%] translate-y-[50%] z-0 group not-md:hidden dark:hidden", classname)}>
+		<div className={cn("absolute -bottom-210 translate-y-1/2 z-0 group not-md:hidden dark:hidden", classname)}>
 			<div className="w-screen aspect-square bg-foreground rounded-full flex items-start justify-center gap-6 group-hover:translate-y-[8%] sm:gap-10 transition-transform duration-300 ease-in-out">
 				<div
 					ref={eyeRef}

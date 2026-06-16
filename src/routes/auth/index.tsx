@@ -6,7 +6,7 @@ export const Route = createFileRoute("/auth/")({
 	ssr: false,
 	beforeLoad: () => {
 		const user = useAuthStore.getState().user;
-		if (user) throw redirect({ to: "/quiz" });
+		if (user) throw redirect({ to: "/" });
 	},
 	component: AuthPage,
 });

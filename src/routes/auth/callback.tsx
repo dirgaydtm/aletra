@@ -17,7 +17,7 @@ function AuthCallbackPage() {
 			.initialize()
 			.then(() => {
 				const user = useAuthStore.getState().user;
-				navigate({ to: user ? "/quiz" : "/auth" });
+				navigate({ to: user ? "/" : "/auth" });
 			})
 			.catch(() => {
 				navigate({ to: "/auth" });

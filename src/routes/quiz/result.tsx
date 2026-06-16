@@ -11,7 +11,7 @@ export const Route = createFileRoute("/quiz/result")({
 		if (!user) throw redirect({ to: "/auth" });
 
 		const status = useQuizStore.getState().status;
-		if (status === "idle") throw redirect({ to: "/quiz" });
+		if (status === "idle") throw redirect({ to: "/" });
 		if (status === "active") throw redirect({ to: "/quiz/play" });
 	},
 	component: QuizResultPage,

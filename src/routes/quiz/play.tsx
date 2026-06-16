@@ -12,7 +12,7 @@ export const Route = createFileRoute("/quiz/play")({
 		if (!user) throw redirect({ to: "/auth" });
 
 		const status = useQuizStore.getState().status;
-		if (status === "idle") throw redirect({ to: "/quiz" });
+		if (status === "idle") throw redirect({ to: "/" });
 		if (status === "finished") throw redirect({ to: "/quiz/result" });
 	},
 	component: QuizPlayPage,

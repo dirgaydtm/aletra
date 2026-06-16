@@ -26,12 +26,14 @@ export function BlinkCursor({ isDone = false }: BlinkCursorProps) {
 interface TypewriterTextProps {
 	text: string;
 	speed?: number;
+	delay?: number;
 	className?: string;
 }
 
 export function TypewriterText({
 	text,
 	speed = 30,
+	delay = 0,
 	className,
 }: TypewriterTextProps) {
 	const [displayedText, setDisplayedText] = useState("");
@@ -42,19 +44,27 @@ export function TypewriterText({
 		setIsDone(false);
 
 		let i = 0;
+		let interval: NodeJS.Timeout;
 
-		const interval = setInterval(() => {
-			i++;
-			setDisplayedText(text.slice(0, i));
+		const startTyping = () => {
+			interval = setInterval(() => {
+				i++;
+				setDisplayedText(text.slice(0, i));
 
-			if (i >= text.length) {
-				setIsDone(true);
-				clearInterval(interval);
-			}
-		}, speed);
+				if (i >= text.length) {
+					setIsDone(true);
+					clearInterval(interval);
+				}
+			}, speed);
+		};
 
-		return () => clearInterval(interval);
-	}, [text, speed]);
+		const timeout = setTimeout(startTyping, delay);
+
+		return () => {
+			clearTimeout(timeout);
+			if (interval) clearInterval(interval);
+		};
+	}, [text, speed, delay]);
 
 	return (
 		<span className={className}>

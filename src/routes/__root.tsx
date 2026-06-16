@@ -1,5 +1,6 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { ThemeProvider } from "next-themes";
+import { SystemDecorations } from "#/shared/components/SystemDecorations";
 import ThemeToggle from "#/shared/components/ThemeToggle";
 import { Toaster } from "#/shared/components/ui/sonner";
 import { useAuthStore } from "#/shared/stores/auth.store";
@@ -33,11 +34,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<head>
 				<HeadContent />
 			</head>
-			<body className="min-h-screen bg-background text-foreground antialiased">
+			<body className="min-h-screen bg-background text-foreground antialiased font-mono">
 				<ThemeProvider attribute="class" defaultTheme="dark">
 					{children}
 					<Toaster />
 					<ThemeToggle />
+					<SystemDecorations />
 				</ThemeProvider>
 				<Scripts />
 			</body>

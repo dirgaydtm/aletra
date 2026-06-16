@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { decode } from "he";
+import Dino from "#/shared/components/Dino";
 import slideInLeft from "#/shared/animations/slide-in-left";
 import {
 	Terminal,
@@ -47,7 +48,7 @@ export function ResultCard() {
 
 	const handleRetry = () => {
 		resetQuiz();
-		navigate({ to: "/quiz" });
+		navigate({ to: "/" });
 	};
 
 	return (
@@ -101,7 +102,8 @@ export function ResultCard() {
 				</TerminalFooter>
 			</Terminal>
 
-			<Terminal className="flex-2 not-lg:max-w-lg">
+			<Terminal className="flex-2 not-lg:max-w-lg relative overflow-visible">
+				<Dino className="absolute -top-14 right-12 size-16 -rotate-6 rotate-y-180" />
 				<TerminalHeader>
 					<div className="flex items-center gap-3">
 						<TerminalWindowControls />

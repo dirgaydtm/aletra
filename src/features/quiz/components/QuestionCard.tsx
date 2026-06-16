@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { decode } from "he";
+import Dino from "#/shared/components/Dino";
 import {
 	Terminal,
 	TerminalBody,
@@ -37,7 +38,8 @@ export function QuestionCard({ question }: Props) {
 	};
 
 	return (
-		<Terminal className="max-w-2xl">
+		<Terminal className="max-w-2xl relative overflow-visible">
+			<Dino className="absolute -top-14 left-6 size-16 rotate-6 drop-shadow-md" />
 			<TerminalHeader>
 				<div className="flex items-center gap-3">
 					<TerminalWindowControls />

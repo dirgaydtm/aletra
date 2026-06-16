@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as QuizIndexRouteImport } from './routes/quiz/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as QuizResultRouteImport } from './routes/quiz/result'
 import { Route as QuizPlayRouteImport } from './routes/quiz/play'
@@ -19,11 +18,6 @@ import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuizIndexRoute = QuizIndexRouteImport.update({
-  id: '/quiz/',
-  path: '/quiz/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
@@ -53,7 +47,6 @@ export interface FileRoutesByFullPath {
   '/quiz/play': typeof QuizPlayRoute
   '/quiz/result': typeof QuizResultRoute
   '/auth/': typeof AuthIndexRoute
-  '/quiz/': typeof QuizIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +54,6 @@ export interface FileRoutesByTo {
   '/quiz/play': typeof QuizPlayRoute
   '/quiz/result': typeof QuizResultRoute
   '/auth': typeof AuthIndexRoute
-  '/quiz': typeof QuizIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,19 +62,12 @@ export interface FileRoutesById {
   '/quiz/play': typeof QuizPlayRoute
   '/quiz/result': typeof QuizResultRoute
   '/auth/': typeof AuthIndexRoute
-  '/quiz/': typeof QuizIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/auth/callback'
-    | '/quiz/play'
-    | '/quiz/result'
-    | '/auth/'
-    | '/quiz/'
+  fullPaths: '/' | '/auth/callback' | '/quiz/play' | '/quiz/result' | '/auth/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/callback' | '/quiz/play' | '/quiz/result' | '/auth' | '/quiz'
+  to: '/' | '/auth/callback' | '/quiz/play' | '/quiz/result' | '/auth'
   id:
     | '__root__'
     | '/'
@@ -90,7 +75,6 @@ export interface FileRouteTypes {
     | '/quiz/play'
     | '/quiz/result'
     | '/auth/'
-    | '/quiz/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -99,7 +83,6 @@ export interface RootRouteChildren {
   QuizPlayRoute: typeof QuizPlayRoute
   QuizResultRoute: typeof QuizResultRoute
   AuthIndexRoute: typeof AuthIndexRoute
-  QuizIndexRoute: typeof QuizIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -109,13 +92,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quiz/': {
-      id: '/quiz/'
-      path: '/quiz'
-      fullPath: '/quiz/'
-      preLoaderRoute: typeof QuizIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/': {
@@ -155,7 +131,6 @@ const rootRouteChildren: RootRouteChildren = {
   QuizPlayRoute: QuizPlayRoute,
   QuizResultRoute: QuizResultRoute,
   AuthIndexRoute: AuthIndexRoute,
-  QuizIndexRoute: QuizIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
