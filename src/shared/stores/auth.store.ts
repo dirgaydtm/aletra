@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { supabase } from "#/shared/lib/supabase";
 import { type AuthUser, authUserSchema } from "#/shared/schemas/auth.schema";
+import { useQuizStore } from "#/shared/stores/quiz.store";
 
 interface AuthState {
 	user: AuthUser | null;
@@ -56,4 +57,8 @@ export const useAuthStore = create<AuthState>()((set) => ({
 supabase.auth.onAuthStateChange((_event, session) => {
 	const newUser = session?.user ? mapUser(session.user) : null;
 	useAuthStore.setState({ user: newUser, isLoading: false });
+
+	if (!newUser) {
+		useQuizStore.getState().resetQuiz();
+	}
 });
